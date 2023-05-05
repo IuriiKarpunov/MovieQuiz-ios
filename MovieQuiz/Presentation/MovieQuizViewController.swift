@@ -125,9 +125,3 @@ final class MovieQuizViewController: UIViewController {
         }
     }
 }
-
-
-
-
-
-
