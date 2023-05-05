@@ -33,23 +33,21 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 20
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
     }
     
-    struct QuizQuestion {
+    private struct QuizQuestion {
       let image: String
       let text: String
       let correctAnswer: Bool
     }
 
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
       let title: String
       let text: String
       let buttonText: String
@@ -68,7 +66,7 @@ final class MovieQuizViewController: UIViewController {
         QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
     ]
 
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
       let image: UIImage
       let question: String
       let questionNumber: String
@@ -88,7 +86,7 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     
-    private func show(quiz result: QuizResultsViewModel) {
+    private func show(result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
             message: result.text,
@@ -114,7 +112,7 @@ final class MovieQuizViewController: UIViewController {
                 title: "Этот раунд окончен!",
                 text: text,
                 buttonText: "Сыграть ещё раз")
-            show(quiz: viewModel)
+            show(result: viewModel)
         } else {
             currentQuestionIndex += 1
             imageView.layer.borderWidth = 0
