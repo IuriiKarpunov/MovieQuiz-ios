@@ -24,40 +24,40 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter = AlertPresenter(viewController: self)
         questionFactory?.requestNextQuestion()
         
-        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileName = "top250MoviesIMDB.json"
-        documentsURL.appendPathComponent(fileName)
-        var jsonString = try? String(contentsOf: documentsURL)
-        
-        guard let data = jsonString?.data(using: .utf8) else {
-            return
-        }
-        
-        
-        struct Actor: Codable {
-            let id: String
-            let image: String
-            let name: String
-            let asCharacter: String
-        }
-
-        struct Movie: Codable {
-          let id: String
-          let rank: String
-          let title: String
-          let fullTitle: String
-          let year: String
-          let image: String
-          let crew: String
-          let imDbRating: String
-          let imDbRatingCount: String
-        }
-
-        struct Top: Decodable {
-            let items: [Movie]
-        }
-
-        let result = try? JSONDecoder().decode(Top.self, from: data)
+//        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//        let fileName = "top250MoviesIMDB.json"
+//        documentsURL.appendPathComponent(fileName)
+//        var jsonString = try? String(contentsOf: documentsURL)
+//
+//        guard let data = jsonString?.data(using: .utf8) else {
+//            return
+//        }
+//
+//
+//        struct Actor: Codable {
+//            let id: String
+//            let image: String
+//            let name: String
+//            let asCharacter: String
+//        }
+//
+//        struct Movie: Codable {
+//          let id: String
+//          let rank: String
+//          let title: String
+//          let fullTitle: String
+//          let year: String
+//          let image: String
+//          let crew: String
+//          let imDbRating: String
+//          let imDbRatingCount: String
+//        }
+//
+//        struct Top: Decodable {
+//            let items: [Movie]
+//        }
+//
+//        let result = try? JSONDecoder().decode(Top.self, from: data)
 
         
         
@@ -128,7 +128,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            showAlert()
+            let text = "Ваш результат: \(correctAnswers)/10"
+            let viewModel = QuizResultsViewModel(
+                            title: "Этот раунд окончен!",
+                            text: text,
+                            buttonText: "Сыграть ещё раз")
+            show(result: viewModel)
         } else {
             currentQuestionIndex += 1
             imageView.layer.borderWidth = 0
@@ -137,11 +142,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func showAlert() {
+    private func show(result: QuizResultsViewModel) {
         let alertModel = AlertModel(
-            title: "Этот раунд окончен!",
-            text: "Ваш результат: \(correctAnswers)/10",
-            buttonText: "Сыграть ещё раз",
+            title: result.title,
+            text: result.text,
+            buttonText: result.buttonText,
             completion: {  [weak self] in
                 guard let self = self else { return }
                 
