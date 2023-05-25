@@ -7,14 +7,13 @@
 
 import UIKit
 
- 
 class AlertPresenter: AlertPresenterProtocol {
     
     private weak var viewController: UIViewController?
     
     func show(_ result: AlertModel) {
         let alert = UIAlertController(title: result.title,
-                                      message: result.text,
+                                      message: result.message,
                                       preferredStyle: .alert)
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             result.completion()
@@ -27,5 +26,6 @@ class AlertPresenter: AlertPresenterProtocol {
     init(viewController: UIViewController?) {
         self.viewController = viewController
     }
+    
 }
 

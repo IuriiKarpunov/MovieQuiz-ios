@@ -16,7 +16,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     
-    
     private var alertPresenter: AlertPresenterProtocol?
     
     private var statisticService: StatisticService?
@@ -123,7 +122,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func show(result: QuizResultsViewModel) {
         let alertModel = AlertModel(
             title: result.title,
-            text: result.text,
+            message: result.text,
             buttonText: result.buttonText,
             completion: {  [weak self] in
                 guard let self = self else { return }
