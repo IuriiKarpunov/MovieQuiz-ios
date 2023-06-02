@@ -47,6 +47,10 @@ class QuestionFactory: QuestionFactoryProtocol {
                imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
                 print("Failed to load image")
+                DispatchQueue.main.async {  [weak self] in
+                    guard let self = self else { return }
+                    self.delegate?.didFailToLoadData(with: error)
+                }
             }
             
             let rating = Float(movie.rating) ?? 0
@@ -56,10 +60,6 @@ class QuestionFactory: QuestionFactoryProtocol {
             while rating == ratingRandom{
                 ratingRandom = Float(String(format: "%.1f", Float.random(in: 8.0...9.2)))!
             }
-            
-            
-            print(ratingRandom)
-            print(rating)
             
             let text = "Рейтинг этого фильма больше чем \(String(describing: ratingRandom))?"
             let correctAnswer = rating > ratingRandom

@@ -21,12 +21,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private var statisticService: StatisticService?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         alertPresenter = AlertPresenter(viewController: self)
         statisticService = StatisticServiceImplementation()
-        showLoadingIndicator()
+        activityIndicator.startAnimating()
         questionFactory?.loadData()
         
         
@@ -47,7 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func didLoadDataFromServer() {
-        hideLoadingIndicator()
+        activityIndicator.stopAnimating()
         questionFactory?.requestNextQuestion()
     }
     
@@ -147,18 +151,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             })
         alertPresenter?.show(alertModel)
     }
-    
-    private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-    }
-    
-    private func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
-    }
-    
+
     private func showNetworkError(message: String) {
-        hideLoadingIndicator()
+        activityIndicator.stopAnimating()
         
         let model = AlertModel(
             title: "Что-то пошло не так(",
@@ -170,7 +165,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
                 self.imageView.layer.borderWidth = 0
-                questionFactory?.requestNextQuestion()
+                activityIndicator.startAnimating()
+                questionFactory?.loadData()
             })
         alertPresenter?.show(model)
     }
