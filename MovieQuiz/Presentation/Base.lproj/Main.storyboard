@@ -40,7 +40,6 @@
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JGZ-E6-J8o" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="31.333333333333343" width="335" height="502.66666666666663"/>
-                                        <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="JGZ-E6-J8o" secondAttribute="height" multiplier="2:3" id="lBT-uB-Uhf"/>
                                         </constraints>
@@ -51,7 +50,7 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlB-lq-F71" userLabel="Question Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlB-lq-F71" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="542" width="335" height="108"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
@@ -101,17 +100,24 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="1gz-78-hRa">
+                                <rect key="frame" x="177.66666666666666" y="396" width="20" height="20"/>
+                                <color key="color" name="YP White"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Rb9-Ef-Hie" secondAttribute="bottom" id="7I5-Re-CIZ"/>
                             <constraint firstItem="Rb9-Ef-Hie" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="ER9-5N-ugS"/>
+                            <constraint firstItem="1gz-78-hRa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Q5d-9n-iJS"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Rb9-Ef-Hie" secondAttribute="trailing" constant="20" id="XGa-fW-dQB"/>
+                            <constraint firstItem="1gz-78-hRa" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jrQ-YO-XtI"/>
                             <constraint firstItem="Rb9-Ef-Hie" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="nvf-cD-MPN"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="1gz-78-hRa" id="E3s-wx-WcY"/>
                         <outlet property="counterLabel" destination="DEL-Y6-KFN" id="1vB-kz-sdf"/>
                         <outlet property="imageView" destination="JGZ-E6-J8o" id="IcQ-PG-WhZ"/>
                         <outlet property="noButton" destination="OvV-Gp-Pbz" id="e2d-GV-WJ9"/>
