@@ -39,6 +39,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - QuestionFactoryDelegate
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
+        activityIndicator.startAnimating()
         guard let question = question else {
             return
         }
@@ -48,6 +49,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
+        activityIndicator.stopAnimating()
     }
     
     func didLoadDataFromServer() {
@@ -55,8 +57,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
     }
     
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
+    func didFailToLoadData(with error: String) {
+        showNetworkError(message: error)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -109,6 +111,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNextQuestionOrResults() {
+        activityIndicator.stopAnimating()
         guard let statisticService = statisticService else {
             print("Не удалось получить статистику")
             return
