@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A2560CF2A33AF3C006D3D54 /* MovieQuizTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2560CE2A33AF3C006D3D54 /* MovieQuizTests.swift */; };
+		4A117BE02A35FDA60055DB20 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A117BDF2A35FDA60055DB20 /* ArrayTests.swift */; };
+		4A117BE42A361B9F0055DB20 /* MoviesLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A117BE32A361B9F0055DB20 /* MoviesLoaderTests.swift */; };
 		4A4B80A52A12299900556ADD /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4B80A42A12299900556ADD /* QuestionFactory.swift */; };
 		4A4B80A82A122D6200556ADD /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4B80A72A122D6200556ADD /* QuizStepViewModel.swift */; };
 		4A4B80AA2A122D7100556ADD /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4B80A92A122D7100556ADD /* QuizResultsViewModel.swift */; };
@@ -48,8 +49,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4A117BDF2A35FDA60055DB20 /* ArrayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
+		4A117BE32A361B9F0055DB20 /* MoviesLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoaderTests.swift; sourceTree = "<group>"; };
 		4A2560CC2A33AF3C006D3D54 /* MovieQuizTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieQuizTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4A2560CE2A33AF3C006D3D54 /* MovieQuizTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizTests.swift; sourceTree = "<group>"; };
 		4A4B80A42A12299900556ADD /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		4A4B80A72A122D6200556ADD /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
 		4A4B80A92A122D7100556ADD /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
@@ -102,7 +104,8 @@
 		4A2560CD2A33AF3C006D3D54 /* MovieQuizTests */ = {
 			isa = PBXGroup;
 			children = (
-				4A2560CE2A33AF3C006D3D54 /* MovieQuizTests.swift */,
+				4A117BDF2A35FDA60055DB20 /* ArrayTests.swift */,
+				4A117BE32A361B9F0055DB20 /* MoviesLoaderTests.swift */,
 			);
 			path = MovieQuizTests;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				TargetAttributes = {
 					4A2560CB2A33AF3C006D3D54 = {
 						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
 						TestTargetID = AD1ABAAD2831907B00B3E448;
 					};
 					AD1ABAAD2831907B00B3E448 = {
@@ -312,7 +316,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A2560CF2A33AF3C006D3D54 /* MovieQuizTests.swift in Sources */,
+				4A117BE02A35FDA60055DB20 /* ArrayTests.swift in Sources */,
+				4A117BE42A361B9F0055DB20 /* MoviesLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +385,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YJCHVPQ6N4;
@@ -389,6 +395,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "MovieQuizTests/MovieQuizTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MovieQuiz.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MovieQuiz";
@@ -400,6 +408,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YJCHVPQ6N4;
@@ -409,6 +418,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "MovieQuizTests/MovieQuizTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MovieQuiz.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MovieQuiz";
