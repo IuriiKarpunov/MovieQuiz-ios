@@ -11,9 +11,10 @@ import UIKit
 final class MovieQuizPresenter {
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
+    var correctAnswers: Int = 0
     var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
-    var correctAnswers: Int = 0
+    
     var questionFactory: QuestionFactoryProtocol?
     var statisticService: StatisticService?
     var alertPresenter: AlertPresenterProtocol?
@@ -23,7 +24,7 @@ final class MovieQuizPresenter {
         currentQuestionIndex == questionsAmount - 1
     }
     
-    func resetQuestionIndex() {
+    func restartGame() {
         currentQuestionIndex = 0
     }
     
@@ -53,6 +54,12 @@ final class MovieQuizPresenter {
         }
         let givenAnswer = isYes
         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    func didAnswer(isCorrectAnswer: Bool) {
+        if isCorrectAnswer {
+            correctAnswers += 1
+        }
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {

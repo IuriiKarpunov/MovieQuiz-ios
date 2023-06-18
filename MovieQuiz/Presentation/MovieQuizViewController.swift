@@ -10,8 +10,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
-    private var correctAnswers = 0
-    
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
@@ -67,15 +65,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     
     func showAnswerResult(isCorrect: Bool) {
-        if isCorrect {
-            correctAnswers += 1
-        }
+        presenter.didAnswer(isCorrectAnswer: isCorrect)
+        
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            self.presenter.correctAnswers = self.correctAnswers
             self.presenter.questionFactory = self.questionFactory
             self.presenter.showNextQuestionOrResults()
             self.yesButton.isEnabled = true
@@ -98,8 +94,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             completion: {  [weak self] in
                 guard let self = self else { return }
                 
-                self.presenter.resetQuestionIndex()
-                self.correctAnswers = 0
+                self.presenter.restartGame()
                 self.imageView.layer.borderWidth = 0
                 questionFactory?.requestNextQuestion()
             })
@@ -115,9 +110,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             buttonText: "Попробовать еще раз",
             completion: {  [weak self] in
                 guard let self = self else { return }
-                
-                self.presenter.resetQuestionIndex()
-                self.correctAnswers = 0
+              
+                self.presenter.restartGame()
                 self.imageView.layer.borderWidth = 0
                 activityIndicator.startAnimating()
                 questionFactory?.loadData()
