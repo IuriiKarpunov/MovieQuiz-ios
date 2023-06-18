@@ -13,6 +13,11 @@ final class MovieQuizPresenter {
     private var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
+    var correctAnswers: Int = 0
+    var questionFactory: QuestionFactoryProtocol?
+    var statisticService: StatisticService?
+    var alertPresenter: AlertPresenterProtocol?
+    
     
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
@@ -35,18 +40,59 @@ final class MovieQuizPresenter {
     }
     
     func noButtonClicked() {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        didAnswer(isYes: false)
     }
     
     func yesButtonClicked() {
+        didAnswer(isYes: true)
+    }
+    
+    private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = true
+        let givenAnswer = isYes
         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
+    
+    func showNextQuestionOrResults() {
+        viewController?.activityIndicator.stopAnimating()
+        guard let statisticService = statisticService else {
+            print("Не удалось получить статистику")
+            return
+        }
+        
+        if self.isLastQuestion() {
+            statisticService.store(correct: correctAnswers, total: self.questionsAmount)
+            
+            let text = """
+            Ваш результат: \(correctAnswers)/\(questionsAmount)
+            Количество сыгранных квизов: \(statisticService.gamesCount)
+            Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) \(statisticService.bestGame.date.dateTimeString)
+            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+            """
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            viewController?.show(result: viewModel)
+        } else {
+            self.switchToNextQuestion()
+            viewController?.imageView.layer.borderWidth = 0
+            
+            questionFactory?.requestNextQuestion()
+        }
     }
 }
