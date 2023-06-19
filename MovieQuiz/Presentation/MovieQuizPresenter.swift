@@ -86,7 +86,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             return
         }
         let givenAnswer = isYes
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     func didAnswer(isCorrectAnswer: Bool) {
@@ -107,7 +107,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func showNextQuestionOrResults() {
+    func proceedToNextQuestionOrResults() {
         viewController?.activityIndicator.stopAnimating()
         guard let statisticService = statisticService else {
             print("Не удалось получить статистику")
@@ -115,7 +115,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
         
         if self.isLastQuestion() {
-            statisticService.store(correct: correctAnswers, total: self.questionsAmount)
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
             
             let text = """
             Ваш результат: \(correctAnswers)/\(questionsAmount)
@@ -133,6 +133,17 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             viewController?.imageView.layer.borderWidth = 0
             
             questionFactory?.requestNextQuestion()
+        }
+    }
+    
+    func proceedWithAnswer(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.proceedToNextQuestionOrResults()
+            viewController?.enableButtons()
         }
     }
 }

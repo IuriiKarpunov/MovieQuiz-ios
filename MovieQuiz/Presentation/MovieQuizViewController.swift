@@ -1,7 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
@@ -33,32 +32,19 @@ final class MovieQuizViewController: UIViewController {
 
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
+        disableButtons()
         presenter.noButtonClicked()
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
+        disableButtons()
         presenter.yesButtonClicked()
     }
     
-    
-    
-    func showAnswerResult(isCorrect: Bool) {
-        presenter.didAnswer(isCorrectAnswer: isCorrect)
-        
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            self.presenter.showNextQuestionOrResults()
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+            imageView.layer.borderWidth = 8
+            imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         }
-    }
     
     func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -104,6 +90,16 @@ final class MovieQuizViewController: UIViewController {
     
     func hideLoadingIndicator() {
         activityIndicator.stopAnimating()
+    }
+    
+    func enableButtons() {
+        self.yesButton.isEnabled = true
+        self.noButton.isEnabled = true
+    }
+    
+    func disableButtons() {
+        self.yesButton.isEnabled = false
+        self.noButton.isEnabled = false
     }
 }
 
