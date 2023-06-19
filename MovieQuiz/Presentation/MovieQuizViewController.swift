@@ -51,7 +51,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         counterLabel.text = step.questionNumber
     }
     
-    
     func show(result: QuizResultsViewModel) {
         let alertModel = AlertModel(
             title: result.title,
