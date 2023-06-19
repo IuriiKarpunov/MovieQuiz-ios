@@ -10,13 +10,20 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
+    private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewController?
-    var statisticService: StatisticService?
-    var alertPresenter: AlertPresenterProtocol?
+    private var alertPresenter: AlertPresenterProtocol?
+    
+    private let questionsAmount: Int = 10
+    private var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
+    private var currentQuestion: QuizQuestion?
     
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
+        
+        statisticService = StatisticServiceImplementation()
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
@@ -46,10 +53,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    let questionsAmount: Int = 10
-    private var currentQuestionIndex: Int = 0
-    var correctAnswers: Int = 0
-    var currentQuestion: QuizQuestion?
+
     
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
@@ -107,7 +111,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func proceedToNextQuestionOrResults() {
+    private func proceedToNextQuestionOrResults() {
         viewController?.activityIndicator.stopAnimating()
         guard let statisticService = statisticService else {
             print("Не удалось получить статистику")
@@ -136,7 +140,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func proceedWithAnswer(isCorrect: Bool) {
+    private func proceedWithAnswer(isCorrect: Bool) {
         didAnswer(isCorrectAnswer: isCorrect)
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         

@@ -9,7 +9,6 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
-    private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var presenter: MovieQuizPresenter!
     
@@ -17,19 +16,17 @@ final class MovieQuizViewController: UIViewController {
         return .lightContent
     }
     
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter = MovieQuizPresenter(viewController: self)
         alertPresenter = AlertPresenter(viewController: self)
-        presenter.statisticService = StatisticServiceImplementation()
         showLoadingIndicator()
-        questionFactory?.loadData()
-        
-        
     }
     
-
+    // MARK: - Actions
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         disableButtons()
@@ -41,10 +38,12 @@ final class MovieQuizViewController: UIViewController {
         presenter.yesButtonClicked()
     }
     
+    // MARK: - Private functions
+    
     func highlightImageBorder(isCorrectAnswer: Bool) {
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        }
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
     
     func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -66,7 +65,7 @@ final class MovieQuizViewController: UIViewController {
             })
         alertPresenter?.show(alertModel)
     }
-
+    
     func showNetworkError(message: String) {
         hideLoadingIndicator()
         
@@ -76,7 +75,7 @@ final class MovieQuizViewController: UIViewController {
             buttonText: "Попробовать еще раз",
             completion: {  [weak self] in
                 guard let self = self else { return }
-              
+                
                 self.presenter.restartGame()
                 self.imageView.layer.borderWidth = 0
                 showLoadingIndicator()
