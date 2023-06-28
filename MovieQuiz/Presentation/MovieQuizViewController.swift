@@ -2,12 +2,16 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
+    // MARK: - Outlets
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    
+    // MARK: - Features
     
     private var alertPresenter: AlertPresenterProtocol?
     private var presenter: MovieQuizPresenter!
@@ -26,23 +30,15 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         showLoadingIndicator()
     }
     
-    // MARK: - Actions
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        disableButtons()
-        presenter.noButtonClicked()
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        disableButtons()
-        presenter.yesButtonClicked()
-    }
-    
-    // MARK: - Private functions
+    // MARK: - Functions
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
-        imageView.layer.borderWidth = 8
+        showBorder(true)
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
+    
+    func showBorder(_ activate: Bool) {
+        imageView.layer.borderWidth = activate ? 8 : 0
     }
     
     func show(quiz step: QuizStepViewModel) {
@@ -60,7 +56,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
                 guard let self = self else { return }
                 
                 self.presenter.restartGame()
-                self.imageView.layer.borderWidth = 0
+                self.showBorder(false)
             })
         alertPresenter?.show(alertModel)
     }
@@ -76,7 +72,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
                 guard let self = self else { return }
                 
                 self.presenter.restartGame()
-                self.imageView.layer.borderWidth = 0
+                self.showBorder(false)
                 showLoadingIndicator()
             })
         alertPresenter?.show(model)
@@ -90,14 +86,21 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         activityIndicator.stopAnimating()
     }
     
-    func enableButtons() {
-        self.yesButton.isEnabled = true
-        self.noButton.isEnabled = true
+    func activatingButtons(_ active: Bool) {
+        yesButton.isEnabled = active
+        noButton.isEnabled = active
     }
     
-    func disableButtons() {
-        self.yesButton.isEnabled = false
-        self.noButton.isEnabled = false
+    // MARK: - Actions
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        activatingButtons(false)
+        presenter.noButtonClicked()
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        activatingButtons(false)
+        presenter.yesButtonClicked()
     }
 }
 

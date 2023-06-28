@@ -5,14 +5,15 @@
 //  Created by Iurii on 17.06.23.
 //
 
-import Foundation
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
+    // MARK: - Features
+    
     private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     
     private let questionsAmount: Int = 10
@@ -20,8 +21,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var correctAnswers: Int = 0
     private var currentQuestion: QuizQuestion?
     
+    private var isLastQuestion: Bool {
+        currentQuestionIndex == questionsAmount - 1
+    }
+    
+    // MARK: - Initialization
+    
     init(viewController: MovieQuizViewControllerProtocol) {
-        self.viewController = viewController as? MovieQuizViewController
+        self.viewController = viewController
         
         statisticService = StatisticServiceImplementation()
         
@@ -41,7 +48,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController?.showNetworkError(message: error)
     }
     
-    func didRecieveNextQuestion(question: QuizQuestion?) {
+    func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
         }
@@ -53,18 +60,12 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func isLastQuestion() -> Bool {
-        currentQuestionIndex == questionsAmount - 1
-    }
+    // MARK: - Public functions
     
     func restartGame() {
         currentQuestionIndex = 0
         correctAnswers = 0
         questionFactory?.requestNextQuestion()
-    }
-    
-    func switchToNextQuestion() {
-        currentQuestionIndex += 1
     }
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -83,6 +84,12 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         didAnswer(isYes: true)
     }
     
+    private func switchToNextQuestion() {
+        currentQuestionIndex += 1
+    }
+    
+    // MARK: - Private functions
+    
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
@@ -91,32 +98,20 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    func didAnswer(isCorrectAnswer: Bool) {
+    private func didAnswer(isCorrectAnswer: Bool) {
         if isCorrectAnswer {
             correctAnswers += 1
         }
     }
     
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-        
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.viewController?.show(quiz: viewModel)
-        }
-    }
-    
     private func proceedToNextQuestionOrResults() {
-        viewController?.activityIndicator.stopAnimating()
+        viewController?.hideLoadingIndicator()
         guard let statisticService = statisticService else {
             print("Не удалось получить статистику")
             return
         }
         
-        if self.isLastQuestion() {
+        if isLastQuestion {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             
             let text = """
@@ -132,7 +127,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             viewController?.show(result: viewModel)
         } else {
             self.switchToNextQuestion()
-            viewController?.imageView.layer.borderWidth = 0
+            viewController?.showBorder(false)
             
             questionFactory?.requestNextQuestion()
         }
@@ -145,7 +140,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.proceedToNextQuestionOrResults()
-            viewController?.enableButtons()
+            viewController?.activatingButtons(true)
         }
     }
 }

@@ -13,10 +13,10 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
     func show(result: QuizResultsViewModel) { }
     func showNetworkError(message: String) { }
     func highlightImageBorder(isCorrectAnswer: Bool) { }
+    func showBorder(_ activate: Bool) { }
     func showLoadingIndicator() { }
     func hideLoadingIndicator() { }
-    func enableButtons() { }
-    func disableButtons() { }
+    func activatingButtons(_ active: Bool) { }
 }
 
 final class MovieQuizPresenterTests: XCTestCase {

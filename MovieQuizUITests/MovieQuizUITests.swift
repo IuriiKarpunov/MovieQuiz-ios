@@ -7,7 +7,7 @@
 
 import XCTest
 
-class MovieQuizUITests: XCTestCase {
+final class MovieQuizUITests: XCTestCase {
     // swiftlint:disable:next implicitly_unwrapped_optional
     private var app: XCUIApplication!
     
@@ -64,7 +64,7 @@ class MovieQuizUITests: XCTestCase {
         sleep(3)
         for _ in 1...10 {
             app.buttons["No"].tap()
-            sleep(3)
+            sleep(1)
         }
         
         let alert = app.alerts["Этот раунд окончен!"]
@@ -78,7 +78,7 @@ class MovieQuizUITests: XCTestCase {
         sleep(3)
         for _ in 1...10 {
             app.buttons["No"].tap()
-            sleep(3)
+            sleep(1)
         }
         
         let alert = app.alerts["Этот раунд окончен!"]
