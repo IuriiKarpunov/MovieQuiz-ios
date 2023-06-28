@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter: AlertPresenterProtocol {
     
     private weak var viewController: UIViewController?
     
@@ -26,6 +26,5 @@ class AlertPresenter: AlertPresenterProtocol {
         alert.addAction(action)
         viewController?.present(alert, animated: true, completion: nil)
     }
-    
 }
 
