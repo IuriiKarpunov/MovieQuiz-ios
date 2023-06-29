@@ -14,6 +14,7 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
     
     func highlightImageBorder(isCorrectAnswer: Bool)
     func showBorder(_ activate: Bool)
+    func responseVibration(isCorrectAnswer: Bool)
     func showLoadingIndicator()
     func hideLoadingIndicator()
     
