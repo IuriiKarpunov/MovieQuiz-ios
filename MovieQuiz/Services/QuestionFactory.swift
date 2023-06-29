@@ -18,6 +18,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
     }
     
     private var movies: [MostPopularMovie] = []
+    private let moreLess: [String] = ["больше", "меньше"]
     
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
@@ -68,7 +69,10 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 ratingRandom = Float(String(format: "%.1f", Float.random(in: 8.0...9.2)))!
             }
             
-            let text = "Рейтинг этого фильма больше чем \(String(describing: ratingRandom))?"
+            let randomIndex = (0..<moreLess.count).randomElement() ?? 0
+            let randomMoreLess = moreLess[randomIndex]
+            
+            let text = "Рейтинг этого фильма \(randomMoreLess) чем \(String(describing: ratingRandom))?"
             let correctAnswer = rating > ratingRandom
             
             let question = QuizQuestion(image: imageData,

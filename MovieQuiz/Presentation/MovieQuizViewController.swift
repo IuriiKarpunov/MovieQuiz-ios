@@ -1,4 +1,5 @@
 import UIKit
+import AudioToolbox
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
@@ -15,6 +16,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     private var alertPresenter: AlertPresenterProtocol?
     private var presenter: MovieQuizPresenter!
+    var feedbackGenerator: UINotificationFeedbackGenerator?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -39,6 +41,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     func showBorder(_ activate: Bool) {
         imageView.layer.borderWidth = activate ? 8 : 0
+    }
+    
+    func responseVibration(isCorrectAnswer: Bool) {
+        let feedbackGenerator = UINotificationFeedbackGenerator()
+        isCorrectAnswer ? feedbackGenerator.notificationOccurred(.success) : feedbackGenerator.notificationOccurred(.error)
+        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
     
     func show(quiz step: QuizStepViewModel) {
