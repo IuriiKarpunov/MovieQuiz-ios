@@ -1,5 +1,4 @@
 import UIKit
-import AudioToolbox
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
@@ -46,7 +45,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     func responseVibration(isCorrectAnswer: Bool) {
         let feedbackGenerator = UINotificationFeedbackGenerator()
         isCorrectAnswer ? feedbackGenerator.notificationOccurred(.success) : feedbackGenerator.notificationOccurred(.error)
-        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
     
     func show(quiz step: QuizStepViewModel) {
